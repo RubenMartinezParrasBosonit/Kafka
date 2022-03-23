@@ -1,0 +1,34 @@
+1- Descargar los binarios de kafka
+	https://kafka.apache.org/downloads
+
+2- Situarlo donde queramos, en mi caso en C:\
+
+3- En la carpeta de kafka, creamos la carpeta "data" y dentro las carpetas "kafka" y "zookeeper"
+
+4- Ahora, tenemos que ir a la carpeta "config" y modoficar los archivos zookeeper.properties y server.properties
+	en el primer archivo, modificamos "dataDir" y tenemos que poner el directorio que hemos creado
+	dataDir=C:/kafka_2.13-3.1.0/data/zookeeper
+
+	en el segundo archivo, modificamos el "log.dirs"
+	log.dirs=C:/kafka_2.13-3.1.0/data/kafka
+
+5- Nos vamos a la carpeta donde están los bats para ejecutar kafka, \bin\windows (estoy en windows en mi caso)
+	Ejecutamos zookeper con su fichero de propiedades correspondiente, lo mismo con kafka, hacerlo en cmds
+	diferentes
+
+	zookeeper-server-start.bat C:\kafka_2.13-3.1.0\config\zookeeper.properties
+
+	kafka-server-start.bat C:\kafka_2.13-3.1.0\config\server.properties
+
+6- Creamos los topics donde irán los mensajes y donde serán recogidos, dejo un ejemplo
+
+	kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic mytopic_1
+
+	Este comando sirve para listar y comprobar los topics creados
+
+	kafka-topics.bat --list --bootstrap-server localhost:9092
+
+7- Ejecutamos las aplicaciones y podemos mandar mensajes a través de postman rellenando el body con tipo text
+	y con la url localhost:8080/add/mytopic_1
+	
+	Con esto dejamos un mensaje en topic 1 y nuestra otra aplicación que se encarga de escuchar, lo recogerá
